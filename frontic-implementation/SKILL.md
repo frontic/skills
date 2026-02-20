@@ -209,7 +209,7 @@ Frontic does **not** support duplicate sort field names with different direction
 
 ```typescript
 // One sort field configured, direction chosen per query:
-sort: { field: 'price', order: 'asc' }  // or 'desc'
+sort: { field: 'price.amount', order: 'asc' }  // or 'desc'
 ```
 
 ### Field Source Selection
