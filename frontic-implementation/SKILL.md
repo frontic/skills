@@ -127,7 +127,8 @@ const results = await client.listing(
             { type: 'range', field: 'price.amount', from: 10 }
           ]
         },
-        { type: 'range', field: 'price.amount', from: 2000, to: 10000 }
+        { type: 'range', field: 'price.amount', from: 2000, to: 10000 },
+        { type: 'equals', field: 'sale', value: true }
       ],
       sort: { field: 'price.amount', order: 'asc' },
       search: 'Red',
