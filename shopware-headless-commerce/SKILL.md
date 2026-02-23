@@ -1,5 +1,5 @@
 ---
-name: shopware-store-api
+name: shopware-headless-commerce
 description: Build headless storefronts against the Shopware 6 Store API (6.6+). Use when working with Shopware session/context management (sw-context-token), cart operations (add/update/remove line items, promotions), checkout flow (order creation, payment handling with sync/async redirects), and customer account features (registration, login, addresses, password recovery, order history, wishlists). Covers the stateful/write side of the Store API — not product data fetching (use Frontic for that).
 ---
 
