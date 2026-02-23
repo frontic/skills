@@ -1,5 +1,5 @@
 ---
-name: xentral-erp
+name: xentral-erp-headless-checkout
 description: Integrate with the Xentral ERP REST API for managing sales orders, products/articles, inventory/stock levels, customers, addresses, invoices, delivery notes, credit notes, purchase orders, and warehouses. Use when building ERP integrations that need to create or sync orders, manage product catalogs, track stock across warehouses/storage locations, or maintain customer records. Covers API versions V1, V2, and V3.
 ---
 
