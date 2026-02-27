@@ -1,2 +1,7 @@
 *.skill
 skills-lock.json
+.agents
+.claude
+.vscode
+
+.DS_Store
