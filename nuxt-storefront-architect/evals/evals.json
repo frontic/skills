@@ -1,0 +1,92 @@
+{
+  "skill_name": "nuxt-storefront-architect",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "I want to add a 'New Arrivals' page that shows the latest products with filtering and sorting, accessible at /new-arrivals in English and /neuheiten in German",
+      "expected_output": "A new-arrivals.vue page using useFronticSearch, defineI18nRoute for German path, RefineSheet integration, product grid with skeletons, i18n keys in both locale files",
+      "files": []
+    },
+    {
+      "id": 2,
+      "prompt": "Add a 'Returns Policy' content page in both English and German with structured YAML data for return conditions and a FAQ section",
+      "expected_output": "A returns.yml in content/en/ and content/de/ with Zod schema in content.config.ts, a returns.vue page querying the collection, i18n keys, Accordion for FAQ section",
+      "files": []
+    },
+    {
+      "id": 3,
+      "prompt": "Build a product quick-view modal that opens when clicking a product card, showing the product image, name, price, variant selector, and add-to-cart button without navigating to the full product page",
+      "expected_output": "A QuickView component using Dialog from ui/, receiving product data, variant selection, add-to-cart via useCart + useNotify, integrated into ProductCard with a trigger button",
+      "files": []
+    },
+    {
+      "id": 4,
+      "prompt": "I'm rebuilding our storefront from the main branch onto this bare skeleton. The existing store uses warm neutral tones, a terracotta primary color, Inter for body text and Playfair Display for headings, rounded corners, and generous spacing. Plan the foundation setup — how should I initialize the project before building any pages or components?",
+      "expected_output": "Plan starts with `npx @frontic/ui init` selecting the closest style/preset/palette to match the reference design (e.g. --style maia or vega, --commerce-palette warm, --font inter), then installs components, then refines tailwind.css tokens for exact color/font match",
+      "assertions": [
+        "Recommends running `npx @frontic/ui init` (or equivalent) BEFORE installing components or copying CSS",
+        "Selects a specific --style and --commerce-palette based on the described visual identity",
+        "Does NOT plan to copy tailwind.css from the reference project as the first step",
+        "Mentions refining tailwind.css AFTER init for anything the preset doesn't cover (e.g. Playfair Display heading font)",
+        "Does NOT skip the design system initialization and jump straight to component installation"
+      ],
+      "files": []
+    },
+    {
+      "id": 5,
+      "prompt": "I've just finished adding the layout shell (header, footer, drawer) and a few product components to the bare skeleton. The dev server starts without crashing and pnpm typecheck passes. How should I verify that everything actually works before moving on to building the pages?",
+      "expected_output": "Verification plan that starts by discovering available browser MCP tools (ToolSearch for chrome/playwright/browser), then uses them to navigate to pages and check console. Explicitly states that typecheck passing is NOT sufficient verification. Includes checking server logs, browser console, and interactive flows.",
+      "assertions": [
+        "Does NOT treat 'dev server starts' or 'pnpm typecheck passes' as sufficient — explicitly says these are not enough",
+        "Recommends discovering available MCP tools FIRST (ToolSearch for chrome, playwright, browser, screenshot)",
+        "Recommends actually visiting/browsing the site to check rendering (via MCP tools or manual)",
+        "Recommends checking server-side logs for errors (SSR errors, failed API calls, missing modules)",
+        "Recommends checking browser console for client-side errors or warnings",
+        "Places static checks (typecheck, lint) AFTER browser verification, not before or instead of"
+      ],
+      "files": []
+    },
+    {
+      "id": 6,
+      "prompt": "Build the homepage component for our furniture store. It needs a hero banner with a background image and CTA, a promotional section for a 'Kitchen Essentials' campaign with 3 product images and marketing copy, a category grid showing top-level categories from the menu tree, and a brand values section with 3 value propositions (sustainable, artisan, quality).",
+      "expected_output": "Creates content/en/home.yml FIRST with the data shape (hero image/title/description, promo images/copy, brand values), adds Zod schema to content.config.ts, THEN builds Home.vue that queries it via queryCollection. Hero headline, promo description, brand values text, and all images come from the YAML query result — not from i18n and not from inline constants. Only button text and section chrome labels go in i18n.",
+      "assertions": [
+        "Creates content/en/home.yml (and content/de/home.yml) BEFORE or alongside the Vue component — not after",
+        "Does NOT hardcode image URLs as string constants in <script setup> or template",
+        "Does NOT put hero headlines, promo descriptions, brand values text, or editorial quotes in i18n locale files",
+        "Renders editorial content directly from the queryCollection result (e.g. homeContent.hero.title), not via $t() keys",
+        "Uses useAsyncData + queryCollection to load homepage content from the YAML collection",
+        "Uses useFronticListing('MenuTree') for category data (not hardcoded categories)",
+        "Only puts short reusable UI labels (button text like 'Shop Now', section chrome like 'Collections') in i18n"
+      ],
+      "files": []
+    },
+    {
+      "id": 7,
+      "prompt": "I'm porting a home page from a reference project. The original has image URLs hardcoded in the Vue component and all text as raw strings. I need to delegate the Home.vue creation to a sub-agent. What should I include in the sub-agent's prompt to make sure it follows the right content patterns?",
+      "expected_output": "The prompt to the sub-agent must explicitly specify that editorial content (headlines, descriptions, quotes, value propositions) comes from YAML content files queried via queryCollection — not from i18n. Image URLs must be in the YAML file, not inline in the component. Only short UI labels (button text, section labels) go in i18n. The sub-agent prompt should NOT say 'use $t() for all text' without qualification.",
+      "assertions": [
+        "States that sub-agents do not have access to skills and must receive content tier rules in the prompt",
+        "Warns against telling the sub-agent to 'use $t() for all text' without specifying what goes in i18n vs YAML",
+        "Specifies that image URLs belong in the YAML content file, not inline in the component",
+        "Specifies that editorial content (headlines, descriptions, quotes) comes from queryCollection results, not i18n",
+        "Does NOT suggest hardcoding images 'for now' with a plan to migrate later"
+      ],
+      "files": []
+    },
+    {
+      "id": 8,
+      "prompt": "I'm building a 'Summer Campaign' landing page. It has a hero with a seasonal image and tagline, a curated product grid (6 products), a lifestyle quote, and a newsletter signup. The products come from the Frontic API. Where should each piece of content live?",
+      "expected_output": "Hero image + tagline + lifestyle quote → content/en/summer-campaign.yml (structured content, page-specific editorial). Curated products → useFronticListing or useFronticSearch with a campaign parameter. Newsletter signup labels (placeholder, button, terms) → i18n. The campaign page component queries both sources and composes them.",
+      "assertions": [
+        "Puts the hero image URL in YAML content, NOT inline in the Vue component",
+        "Puts the tagline and lifestyle quote in YAML content, NOT in i18n locale files",
+        "Puts the curated products in Frontic (dynamic tier), not hardcoded product data",
+        "Puts newsletter UI labels (placeholder, button text, terms link) in i18n",
+        "Does NOT put any page-specific editorial text in i18n locale files",
+        "Does NOT suggest putting image URLs in i18n locale files"
+      ],
+      "files": []
+    }
+  ]
+}

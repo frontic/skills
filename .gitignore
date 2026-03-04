@@ -5,3 +5,6 @@ skills-lock.json
 .vscode
 
 .DS_Store
+
+# Eval workspace directories (generated artifacts, not versioned)
+**/*-workspace/
