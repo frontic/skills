@@ -1,0 +1,58 @@
+{
+  "skill_name": "store-discovery",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "I want to migrate our fashion store at https://www.example-fashion.com to Frontic. The store has a mega menu with Women, Men, Kids categories (each with subcategories like Shoes, Bags, Accessories), brand pages for about 40 brands, product pages with color/size variant selectors, customer reviews, and a wishlist feature. It's currently on Shopify. Can you analyze it and tell me what Frontic resources we need?",
+      "expected_output": "A structured migration plan with: products/categories/brands storages identified; ProductCard and ProductFull blocks with variant fields; ProductSearch listing with color/size/price filters and sort fields; CategoryProducts listing with key param; BrandProducts listing with brandKey param; MenuTree block for mega menu; FavoritesProducts listing for wishlist; page type mapping for category/product/brand URLs; note that reviews map to fields on ProductFull not a separate storage; note that blog/content pages use @nuxt/content not Frontic",
+      "assertions": [
+        "Creates both ProductCard AND ProductFull blocks (not just one generic block)",
+        "ProductFull includes variants field typed as Array with options/price/available",
+        "Creates BrandProducts listing with brandKey as required parameter",
+        "Creates MenuTree block for navigation",
+        "ProductSearch listing has filter fields for color AND size AND price",
+        "Price fields use { amount, precision, currency } format, NOT a simple number",
+        "Does NOT create a separate ReviewStorage — adds rating/reviewCount as fields on ProductCard/ProductFull",
+        "Creates FavoritesProducts listing with keys array parameter for wishlist",
+        "Sort fields are defined ONCE per field (not separate asc/desc entries)",
+        "Identifies products, categories, and brands as required storages",
+        "Maps category URLs to CategoryPage via useFronticPage catch-all",
+        "Does NOT map cart/checkout/account to Frontic pages — notes they need commerce backend"
+      ],
+      "files": []
+    },
+    {
+      "id": 2,
+      "prompt": "Here's a store URL: https://www.example-electronics.de — it's a German electronics shop. I noticed it has German and English versions (URLs like /de/ and /en/), a product comparison feature, very detailed product specs tables, and no brand pages at all. The filter sidebar on category pages only has price range and availability. Can you create a Frontic migration plan?",
+      "expected_output": "Migration plan that correctly handles multi-language with contextDomain config, does NOT create brand-related resources since no brand pages exist, creates ProductFull with detailed attributes Record for specs, ProductSearch with only price and availability filters (not speculative extras), notes the comparison feature for UI implementation, and addresses locale URL pattern",
+      "assertions": [
+        "Does NOT create BrandFull, BrandCard, or BrandProducts (no brand pages observed)",
+        "ProductSearch filter fields include ONLY price and availability — does NOT add color/size/material speculatively",
+        "ProductFull block includes an attributes field (Record<string, string> or similar) for specs table",
+        "Mentions contextDomain configuration for multi-language support",
+        "Identifies locale URL prefix pattern (/de/, /en/)",
+        "Notes comparison feature in features inventory but does NOT create a Frontic listing for it",
+        "Recommends frontic config with contextDomain set",
+        "Does NOT create more than 2 filter fields on ProductSearch"
+      ],
+      "files": []
+    },
+    {
+      "id": 3,
+      "prompt": "I want to rebuild our premium furniture store. It has a very clean, minimal design with lots of whitespace, rounded corners everywhere, soft pastel colors, the main CTA buttons are a warm terracotta/coral color. The navigation is simple (just 5 categories, no mega menu). Products don't have variants — each product is unique. There are no reviews, no wishlist, no brand pages. Just beautiful product photography and clean layouts. What Frontic UI configuration and data architecture would you recommend?",
+      "expected_output": "Recommends Maia style with warm/sunset palette. ProductFull without variants. No brand/review/wishlist resources. CategoryProducts listing with key param. Price fields use { amount, precision, currency } format. Editorial content noted for @nuxt/content, not Frontic blocks. Cart/checkout are dedicated routes, not Frontic pages.",
+      "assertions": [
+        "Uses CategoryProducts with required key param (not ProductSearch) since no filters exist",
+        "Uses { amount, precision, currency } format for price fields, NOT a simple number",
+        "Does NOT create content blocks (hero-banner, editorial-block) as Frontic blocks — notes them for @nuxt/content instead",
+        "Listing table uses Frontic naming conventions (CategoryProducts, MenuTreeListing) not generic names like 'product-listing'",
+        "ProductCard omits swatches field entirely (not present as null) since no variants exist",
+        "Explicitly states that cart/checkout are dedicated routes, NOT Frontic pages",
+        "Does NOT create BrandProducts or BrandFull (no brands observed)",
+        "ProductFull block does NOT include a variants field (products are unique)",
+        "Recommends Maia style (not Vega or Lyra) based on rounded corners and generous whitespace"
+      ],
+      "files": []
+    }
+  ]
+}
